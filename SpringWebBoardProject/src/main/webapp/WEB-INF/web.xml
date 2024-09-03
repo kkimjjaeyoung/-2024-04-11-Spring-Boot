@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<!-- Controller 등록
+		DispatcherServlet : Front Controller(요청을 받는 역할)
+		사용자 정의 : Controller(Model) - 요청에 대한 처리 
+		화면 : JSP/HTML
+		1. servlet은 구동, 동작(tomcat에 의해 동작)
+		
+	-->
+	<!-- 
+		사용자 요청 - DispatcherServlet - HandlerMapping - 개발자 요청처리 - ViewResolver - View
+			HandlerMapping : Model에서 @RequestMapping(GET+POST동시처리), @GetMapping(GET=SELECT), @PostMapping(POST=INSERT), @PutMapping(UPDATE), @DeleteMapping(DELETE)
+			개발자 요청처리 : return "main/main" / "redirect:list.do		-	forward(request전송)/sendRedirect(request초기화),  .jsp는 이미 등록된 상태이므로 확장자 없이 파일명만
+			ViewResolver : JSP를 찾아서 Request를 전송 
+			
+			요청처리 : Model
+			화면출력 : JSP
+			
+			Momel1, Model2 차이점
+			JSP : Model1 - 간단하다
+					1. 재사용 불가능
+					2. 다중작업 불가능(혼자작업)
+					3. 보안 취약
+			MVC : Model2 - 복잡
+					1. 재사용 가능
+					2. 분산작업 가능
+					3. 보안 뛰어남
+	 -->	
+
+<!-- 
+				public class DispatcherServlet extends HttpServlet{
+					public void init(ServletConfig config){
+					//1. web.xml에 등록된 데이터 읽기
+						String xml=config.getInitParameter("contextConfigLocation");
+						ApplicationContext app=new ClassPathApplicationContext(xml)		//등록된 클래스를 메모리 할당
+					}
+					public void service(HttpServletRequest request, ~~){
+					//사용자 요청을 받아 처리된 결과를 JSP로 전송
+					}
+					public void destory(){
+					//servlet메모리 해제
+					}
+				}
+			 -->
+
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!--
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/config/application-*.xml</param-value>
+		</init-param>
+		-->
+		<!-- 스프링5 : 자바로 환경설정 -->
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>
+				org.springframework.web.context.support.AnnotationConfigwebApplicationContext
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>com.sist.config.MvcConfig</param-value>
+		</init-param>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 한글변환 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>	
+	</filter-mapping>
+	<!-- 에러별처리 -->
+	<!-- 보안 등록 : security(권한부여, 자동로그인, 카카오/네이버이용 로그인) -->
+
+</web-app>
