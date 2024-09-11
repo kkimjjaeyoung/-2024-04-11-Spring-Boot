@@ -2,9 +2,29 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-
-	 <!-- 톰캣이 읽기 -->
-    <!-- DispatchServlet: Controller 등록 -->
+    <!-- 톰캣이 읽기 -->
+    <!-- DispatchServlet: Controller 등록 
+         .do => DispatcherServlet를 찾는다 
+                     |
+                  HandlerMapping
+                     |
+                   ***GetMapping / PostMapping / RequestMapping을 찾아서 메소드 호출
+                     | 결과값 ==> model
+                       ==== 오라클 : 데이터베이스 연동 => MyBatis / JPA 
+                   ViewResolver
+                     | model => request변환 
+                  *** JSP => 데이터를 받아서 화면 출력 
+      Spring : 약간의 개념 (DI / AOP / MVC)
+               Spring 형식
+               ========== 표준화 (모든 개발자 동일 코딩) ==> 입문 
+               
+      Middle : Tiles (include) / Transaction / Validation / Security 
+               Task / Batch
+      High : Spring-Data , SI    
+    -->
+    <!-- 
+       Error / Security 
+     -->
     <servlet>
       <servlet-name>dispatcher</servlet-name>
       <!-- @WebServlet("*.do") -->
