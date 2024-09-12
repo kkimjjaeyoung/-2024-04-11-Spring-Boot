@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<!-- 
+	톰캣에 의해 실행
+		1. Controller 등록 : Servlet(URL주소에 의호 톰캣 호출 : web.xml, server.xml)
+			프로그램 제어는 스프링에 의해 작동
+			1. 클래스 관리(객체생성~객체소멸까지)
+				1) 객체 생성(클래스명, 구분자)
+					<bean id=" class=">
+						구분자 / 리플랙션(class.forName)
+					DI(의존성 주입) : 스프링에 의해 값 설정. 초기화와 동시에 값 성ㄹ정
+						- 객체 맴버변수는 private(캡슐화), 접근불가
+						- setXxx(), 생성자
+					<bean id="" class="" p:name="" setname("") />
+					<bean id="" class="" c:name=""  />
+				2) 
+				
+				클래스 등록 : 한개만 메모리 할당(싱글턴). vo는 필요시마다 개발자가 직접 메모리 할당후 사용(스프링 관리에서 제외)
+					@Component : 일반ㄴ클래스 ~Manager
+					@Repository : DAO
+					@Service : BI
+					@Controller : JSP제어 모델
+					@RestController : 자바스크립트(JSON)
+					@ControllerAdvice : Controller전체에 대한 예외처리 
+					
+			AOP : 공통모듈(반복이 많은 경우). 반복 제거
+				OOP에선 자동호출 불가능 - AOP로 보완
+				
+				PointCut : 어떤 메소드에 적용 - 메소드 지정
+				JoinPoint : 메소드 호출할 위치를 지덩
+				
+			MVC : DI/AOP 포함
+				Controller : 요청을 받아 결과값을 JSP로 전송
+				View : Controller에서 받은 결과값 출력
+				Model : 요청 처리
+				장점 : 유지보수 편리, 여러명 동시개발 가능, 재사용/확장 가능
+			
+			
+				
+ -->				
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	 <servlet>
+      <servlet-name>dispatcher</servlet-name>
+      <!-- @WebServlet("*.do") -->
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/config/application-*.xml</param-value>
+      </init-param>
+    </servlet>
+    <!--
+     .do - dispatcher 호출
+    
+     -->
+    <servlet-mapping>
+      <servlet-name>dispatcher</servlet-name>
+      <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <!-- 한글 변환 : request를 사용하지 않음. 자동 한글변환 처리 -->
+    <filter>
+      <filter-name>encodingFilter</filter-name>
+      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+      <init-param>
+        <param-name>encoding</param-name>
+        <param-value>UTF-8</param-value>
+      </init-param>
+      <init-param>
+        <param-name>forceEncoding</param-name>
+        <param-value>true</param-value>
+      </init-param>
+    </filter>
+    <filter-mapping>
+      <filter-name>encodingFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>
+</web-app>
